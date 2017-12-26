@@ -14,13 +14,24 @@
 
 package fibonacci
 
+// Fibonacci implementation constants
+const (
+	Recursive = iota
+	Linear
+	Logarithmic
+)
+
 // Implementation provides abstraction for fibonacci implmeentations
 type Implementation interface {
-	Fibonacci(int)
+	Fibonacci(int) int
 }
 
-// New returns
-func New() Implementation {
+// New returns asked implementation of fibonacci
+func New(t int) Implementation {
+	if t == Recursive {
+		return new(recursive)
+	}
+	return nil
 }
 
 type recursive struct{}

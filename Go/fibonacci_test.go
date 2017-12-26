@@ -30,8 +30,9 @@ var tests = []struct {
 }
 
 func TestRecursive(t *testing.T) {
+	r := New(Recursive)
 	for _, test := range tests {
-		if got := Fibonacci(test.input); got != test.want {
+		if got := r.Fibonacci(test.input); got != test.want {
 			t.Errorf("Fibonacci(%d) ==> %d != %d)", test.input, got, test.want)
 		}
 	}
