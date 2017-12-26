@@ -28,10 +28,14 @@ type Implementation interface {
 
 // New returns asked implementation of fibonacci
 func New(t int) Implementation {
-	if t == Recursive {
+	switch t {
+	case Recursive:
 		return new(recursive)
+	case Linear:
+		return new(linear)
+	default:
+		return nil
 	}
-	return nil
 }
 
 type recursive struct{}
@@ -41,4 +45,25 @@ func (r *recursive) Fibonacci(n int) int {
 		return 1
 	}
 	return r.Fibonacci(n-1) + r.Fibonacci(n-2)
+}
+
+type linear struct{}
+
+func (r *linear) Fibonacci(n int) int {
+	a := 1
+	b := 1
+
+	for i := 2; i <= n; i++ {
+		if i%2 == 0 {
+			a = a + b
+
+		} else {
+			b = a + b
+		}
+	}
+
+	if n%2 == 0 {
+		return a
+	}
+	return b
 }

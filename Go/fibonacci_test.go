@@ -37,3 +37,12 @@ func TestRecursive(t *testing.T) {
 		}
 	}
 }
+
+func TestLinear(t *testing.T) {
+	l := New(Linear)
+	for _, test := range tests {
+		if got := l.Fibonacci(test.input); got != test.want {
+			t.Errorf("Fibonacci(%d) ==> %d != %d)", test.input, got, test.want)
+		}
+	}
+}
