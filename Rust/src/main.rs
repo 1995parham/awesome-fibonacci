@@ -1,7 +1,16 @@
+use std::io;
+
 fn main() {
-    const N: u32 = 10;
-    for n in 0..N {
-        let x = fibonacci(n);
+    let mut n = String::new();
+
+    println!("Enter length of fibonacci sequence:");
+
+    io::stdin().read_line(&mut n).expect("Failed to read line");
+
+    let n: u32 = n.trim().parse().expect("Not a number");
+
+    for i in 0..n {
+        let x = fibonacci(i);
         println!("{}", x);
     }
 }
@@ -13,6 +22,7 @@ fn fibonacci(n: u32) -> u32 {
     } else if n == 1 {
         1
     } else {
-        fibonacci(n-1) + fibonacci(n-2)
+        fibonacci(n - 1) + fibonacci(n - 2)
     }
 }
+
