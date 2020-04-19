@@ -44,6 +44,7 @@ func (r *recursive) Fibonacci(n int) int {
 	if n == 0 || n == 1 {
 		return 1
 	}
+
 	return r.Fibonacci(n-1) + r.Fibonacci(n-2)
 }
 
@@ -55,15 +56,15 @@ func (r *linear) Fibonacci(n int) int {
 
 	for i := 2; i <= n; i++ {
 		if i%2 == 0 {
-			a = a + b
-
+			a += b
 		} else {
-			b = a + b
+			b += a
 		}
 	}
 
 	if n%2 == 0 {
 		return a
 	}
+
 	return b
 }
