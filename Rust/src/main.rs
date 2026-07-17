@@ -26,3 +26,32 @@ fn fibonacci(n: u32) -> u32 {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::fibonacci;
+
+    // (n, F(n)) with the standard indexing: F(0) = 0, F(1) = 1.
+    // Kept at or below F(47), the last value that fits in a u32.
+    const CASES: [(u32, u32); 13] = [
+        (0, 0),
+        (1, 1),
+        (2, 1),
+        (3, 2),
+        (4, 3),
+        (5, 5),
+        (6, 8),
+        (7, 13),
+        (8, 21),
+        (9, 34),
+        (10, 55),
+        (20, 6765),
+        (30, 832040),
+    ];
+
+    #[test]
+    fn known_values() {
+        for (n, want) in CASES {
+            assert_eq!(fibonacci(n), want, "fibonacci({n})");
+        }
+    }
+}
