@@ -38,12 +38,15 @@ worth anything.
 
 ## Implementations
 
-| Language | Recursive | Linear | Logarithmic | Tests |
-| -------- | :-------: | :----: | :---------: | :---: |
-| [Go](Go/) | ✅ | ✅ | ❌ | ✅ |
-| [Lisp](Lisp/) | ✅ | ❌ | ❌ | ✅ |
-| [Python](Python/) | ✅ | ❌ | ❌ | ✅ |
-| [Rust](Rust/) | ✅ | ❌ | ❌ | ✅ |
+Rows are languages, columns are the algorithms below. Every implementation is
+checked against the same values in CI.
+
+| Language | Recursive | Memoized | Linear | Matrix | Fast doubling | Closed form | Tests |
+| -------- | :-------: | :------: | :----: | :----: | :-----------: | :---------: | :---: |
+| [Go](Go/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [Lisp](Lisp/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [Python](Python/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [Rust](Rust/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 Languages we'd love to see: C, C++, Haskell, JavaScript, Ruby, Elixir, Zig,
 Clojure, OCaml, Scala, Kotlin, Swift, Erlang, Prolog, APL — and anything else
@@ -64,7 +67,19 @@ what makes it worth collecting:
 | **Closed form** | `O(1)`\* | `O(1)` | Binet's formula: `F(n) = (φⁿ - ψⁿ) / √5`. Loses precision to floating point surprisingly early. |
 
 \* Assuming constant-time `pow`, which stops being true once the numbers outgrow
-a machine word — as they do around `F(93)` for 64-bit integers.
+a machine word.
+
+The closed form is the interesting one to compare across languages, because it's
+the only implementation that's *wrong* past a point — the rounding error in
+`pow` eventually flips the result to a neighbouring integer. Where that happens
+depends on the language's floating point, not the maths: it's `F(76)` in Go and
+Rust (both IEEE `double`), and `F(71)` in Python. Each implementation's tests
+pin its own limit, so a regression in it fails the build.
+
+The exact implementations are bounded instead by integer *range*. In Go and Rust
+they work in 64-bit integers, where `F(93)` is the last value that fits; Python
+and Lisp use arbitrary-precision integers and stay exact as far as you care to
+compute.
 
 ## Running Them
 
