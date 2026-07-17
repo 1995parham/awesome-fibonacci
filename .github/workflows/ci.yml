@@ -1,0 +1,72 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  go:
+    name: Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          # No dependencies, so there is no go.sum for the cache to key on.
+          cache: false
+      - name: Format
+        working-directory: Go
+        run: test -z "$(gofmt -l .)" || (gofmt -d . && exit 1)
+      - name: Vet
+        working-directory: Go
+        run: go vet ./...
+      - name: Test
+        working-directory: Go
+        run: go test -v ./...
+
+  rust:
+    name: Rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Format
+        working-directory: Rust
+        run: cargo fmt --check
+      - name: Clippy
+        working-directory: Rust
+        run: cargo clippy -- -D warnings
+      - name: Test
+        working-directory: Rust
+        run: cargo test
+
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Test
+        working-directory: Python
+        run: python -m unittest discover -v
+
+  lisp:
+    name: Lisp
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SBCL
+        run: sudo apt-get update && sudo apt-get install -y sbcl
+      - name: Test
+        working-directory: Lisp
+        run: sbcl --script fibonacci_test.lisp
