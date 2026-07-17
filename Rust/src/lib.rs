@@ -110,11 +110,7 @@ fn pair(n: u64) -> (u64, u64) {
     let c = a * (2 * b - a);
     let d = a * a + b * b;
 
-    if n & 1 == 1 {
-        (d, c + d)
-    } else {
-        (c, d)
-    }
+    if n & 1 == 1 { (d, c + d) } else { (c, d) }
 }
 
 /// The matrix method with the matrix algebra folded out by hand, so it is also

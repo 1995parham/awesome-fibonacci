@@ -1,5 +1,5 @@
 use fibonacci::{
-    closed_form, fast_doubling, linear, matrix, memoized, recursive, CLOSED_FORM_EXACT_UP_TO,
+    CLOSED_FORM_EXACT_UP_TO, closed_form, fast_doubling, linear, matrix, memoized, recursive,
 };
 
 /// (n, F(n)) with the standard indexing: F(0) = 0, F(1) = 1.
