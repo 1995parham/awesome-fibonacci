@@ -73,8 +73,8 @@ The closed form is the interesting one to compare across languages, because it's
 the only implementation that's *wrong* past a point — the rounding error in
 `pow` eventually flips the result to a neighbouring integer. Where that happens
 depends on the language's floating point, not the maths: it's `F(76)` in Go and
-Rust (both IEEE `double`), and `F(71)` in Python. Each implementation's tests
-pin its own limit, so a regression in it fails the build.
+Rust (both IEEE `double`), and `F(71)` in Python and Lisp. Each implementation's
+tests pin its own limit, so a regression in it fails the build.
 
 The exact implementations are bounded instead by integer *range*. In Go and Rust
 they work in 64-bit integers, where `F(93)` is the last value that fits; Python

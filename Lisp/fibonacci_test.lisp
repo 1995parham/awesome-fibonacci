@@ -48,19 +48,21 @@
   (dolist (impl *exact-implementations*)
     (check (car impl) (funcall (cdr impl) 200) want "(fib 200)")))
 
-;; Report where the closed form stops matching the exact answer. This is a
-;; measured property of double-float rounding; the value is printed rather than
-;; asserted because it differs across languages (75 in Go and Rust, 70 in
-;; Python) and is not known here until this test runs.
-(let ((limit nil))
-  (loop for n from 0 below 200
-        while (= (fib-closed-form n) (fib-linear n))
-        do (setf limit n))
-  (format t "closed-form: exact through F(~d)~%" limit)
-  ;; A conservative floor that any reasonable double-float implementation clears.
-  (when (< limit 60)
+;; Where the closed form stops matching the exact answer. A documented property
+;; of double-float rounding rather than a bug, but a silent change to it should
+;; still fail the build. SBCL diverges at F(71), the same point as Python and
+;; earlier than Go and Rust (F(76)); the limit is a property of how each
+;; runtime rounds expt, not of the mathematics.
+(defparameter *closed-form-exact-up-to* 70)
+
+(dotimes (n (1+ *closed-form-exact-up-to*))
+  (check "closed-form" (fib-closed-form n) (fib-linear n)
+         (format nil "(fib ~d) should be exact" n)))
+
+(let ((n (1+ *closed-form-exact-up-to*)))
+  (when (= (fib-closed-form n) (fib-linear n))
     (incf *failed*)
-    (format t "FAIL: closed form only exact to F(~d), expected at least F(60)~%" limit)))
+    (format t "FAIL: closed form is now exact at F(~d); the documented limit moved~%" n)))
 
 (if (zerop *failed*)
     (format t "ok: all implementations agree~%")
