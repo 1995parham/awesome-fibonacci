@@ -41,7 +41,11 @@ func New(t int) Implementation {
 type recursive struct{}
 
 func (r *recursive) Fibonacci(n int) int {
-	if n == 0 || n == 1 {
+	if n == 0 {
+		return 0
+	}
+
+	if n == 1 {
 		return 1
 	}
 
@@ -51,20 +55,12 @@ func (r *recursive) Fibonacci(n int) int {
 type linear struct{}
 
 func (r *linear) Fibonacci(n int) int {
-	a := 1
+	a := 0
 	b := 1
 
-	for i := 2; i <= n; i++ {
-		if i%2 == 0 {
-			a += b
-		} else {
-			b += a
-		}
+	for range n {
+		a, b = b, a+b
 	}
 
-	if n%2 == 0 {
-		return a
-	}
-
-	return b
+	return a
 }
