@@ -47,8 +47,9 @@ checked against the same values in CI.
 | [Lisp](Lisp/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [Python](Python/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [Rust](Rust/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [C](C/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-Languages we'd love to see: C, C++, Haskell, JavaScript, Ruby, Elixir, Zig,
+Languages we'd love to see: C++, Haskell, JavaScript, Ruby, Elixir, Zig,
 Clojure, OCaml, Scala, Kotlin, Swift, Erlang, Prolog, APL — and anything else
 you can make a compiler accept.
 
@@ -73,7 +74,7 @@ The closed form is the interesting one to compare across languages, because it's
 the only implementation that's *wrong* past a point — the rounding error in
 `pow` eventually flips the result to a neighbouring integer. Where that happens
 depends on the language's floating point, not the maths: it's `F(76)` in Go and
-Rust (both IEEE `double`), and `F(71)` in Python and Lisp. Each implementation's
+Rust (both IEEE `double`), and `F(71)` in Python, Lisp, and C. Each implementation's
 tests pin its own limit, so a regression in it fails the build.
 
 The exact implementations are bounded instead by integer *range*. In Go and Rust
@@ -97,6 +98,9 @@ cd Python && python -m unittest discover
 
 # Lisp
 cd Lisp && sbcl --script fibonacci_test.lisp
+
+# C
+cc -std=c11 -Wall -Wextra -Wpedantic -Werror C/fibonacci.c C/fibonacci_test.c -lm -o /tmp/fibonacci_test && /tmp/fibonacci_test
 ```
 
 ## Contributing
