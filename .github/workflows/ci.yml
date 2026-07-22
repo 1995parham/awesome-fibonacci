@@ -70,3 +70,15 @@ jobs:
       - name: Test
         working-directory: Lisp
         run: sbcl --script fibonacci_test.lisp
+
+  c:
+    name: C
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build
+        working-directory: C
+        run: cc -std=c11 -Wall -Wextra -Wpedantic -Werror fibonacci.c fibonacci_test.c -lm -o /tmp/fibonacci_test
+      - name: Test
+        working-directory: C
+        run: /tmp/fibonacci_test
