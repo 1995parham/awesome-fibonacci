@@ -48,7 +48,7 @@ static int test_closed_form_precision_limit(void) {
     int64 expected = fibonacci(LINEAR, n);
 
     if (got != expected) {
-      fprintf(stderr, "closed form should be exact at n=%d: %lld != %lld", n,
+      fprintf(stderr, "closed form should be exact at n=%d: %lld != %lld\n", n,
               got, expected);
       ++failures;
     }
